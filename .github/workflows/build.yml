@@ -5,6 +5,7 @@ on:
     branches: [ main ]
     paths:
       - Dockerfile
+      - .github/workflows/build.yml
   workflow_dispatch:
 
 jobs:
@@ -25,6 +26,9 @@ jobs:
 
       - name: Build and push
         run: |
-          IMAGE=ghcr.io/${{ github.repository_owner }}/is303-python-jupyter:3.12
+          OWNER_LC=${{ github.repository_owner }}
+          OWNER_LC=${OWNER_LC,,}
+          IMAGE=ghcr.io/${OWNER_LC}/is303-python-jupyter:3.12
+          echo "Pushing image: $IMAGE"
           docker build -t "$IMAGE" .
           docker push "$IMAGE"
